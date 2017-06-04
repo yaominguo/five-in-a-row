@@ -1,9 +1,12 @@
-(function() {
-    var chessBoard = document.getElementById('chessBoard'); //获取棋盘
+(function FiveInRow() {
+    var chessBoard = document.getElementById('chessBoard'), //获取棋盘
+        myInfo=document.getElementById('my-info'),
+        enemyInfo=document.getElementById('enemy-info'); 
     var context = chessBoard.getContext('2d');
     var blackChess = true; //黑子先行
     var gameOver = false; //判断游戏是否结束
     var roundOver = false; //判断一方是否下好了
+    var stepOver=false;
     context.strokeStyle = "#bbb"; //棋盘线条颜色
 
     var chessList = []; //定义棋子的数组
@@ -85,6 +88,7 @@
         }
         context.fillStyle = chessColor;
         context.fill();
+        stepOver=!stepOver;
     };
 
     chessBoard.onclick = function(event) { //点击棋盘落子
@@ -102,6 +106,9 @@
             oneStpe(step_x, step_y, blackChess);
             chessList[step_x][step_y] = 1;
             roundOver = !roundOver; //确定有落子了才结束我方回合
+            var info=document.createElement('p');
+            info.appendChild(document.createTextNode('你的落子位置为： (' + step_x + ' , ' + step_y + ')'));
+            myInfo.insertBefore(info,myInfo.firstChild);
             console.log('你的落子位置为： (' + step_x + ' , ' + step_y + ')');
             // if(blackChess){
             //  chessList[step_x][step_y]=1;  //下的是黑子则将数组中的棋子点改为1，白子为2
@@ -118,6 +125,7 @@
                 if (myWins[k] === 5) { //当我方胜利数组中有一种方式累计了5个，即5个棋子连成一线即为胜利，游戏结束
                     gameOver = true;
                     alert("You Win!");
+                    oneMore();
                     console.log('Game Over. You Win!');
                 }
             }
@@ -195,6 +203,9 @@
         }
         oneStpe(max_x, max_y, false); //机器人落子
         roundOver = !roundOver;
+        var info=document.createElement('p');
+        info.appendChild(document.createTextNode('AlphaGuo的落子位置为： (' + max_x + ' , ' + max_y + ')'));
+        enemyInfo.insertBefore(info,enemyInfo.firstChild);
         console.log('AlphaGuo的落子位置为： (' + max_x + ' , ' + max_y + ')');
         chessList[max_x][max_y] = 2; //将落子点由0改为2，表明是白子。黑子是1。
         for (var k = 0; k < count; k++) {
@@ -202,10 +213,12 @@
                 enemyWins[k]++;
                 wins[max_x][max_y][k] = false; //修复连续点击累加胜利的BUG
                 myWins[k] = false;
-                if (enemyWins[k] === 5) { //累计5个机器人胜利
+                if (enemyWins[k] === 5 && !stepOver) { //累计5个机器人胜利
                     gameOver = true;
                     alert("You Lose!");
-                    console.log('Game Over. You Lose!');
+                    
+                    oneMore();
+                    // console.log('Game Over. You Lose!');
                 }
             }
         }
@@ -213,7 +226,15 @@
             blackChess = !blackChess; //黑白轮流下
         }
     };
-
+    var oneMore=function(){
+        var checkBox=confirm("想要再来一局吗？ One More Time?");
+        if(checkBox){
+            document.location.reload();
+        }else {
+            return;
+        }
+        
+    };
 
     window.onload = function() {
         drawChessBoard();

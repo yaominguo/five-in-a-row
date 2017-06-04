@@ -1,12 +1,26 @@
-canvas {
+.page-header {
+  border-bottom: 1px solid #000;
+  padding: 10px 0;
+  margin: 0;
+}
+
+.container {
+  margin: 30px auto;
+}
+.container #chessBoard {
   background: #ddd;
   display: block;
-  margin: 50px auto;
+  margin: 0 auto;
   box-shadow: -2px -2px 2px #BFBFBF,5px 5px 5px #B9B9B9;
   -moz-box-shadow: -2px -2px 2px #BFBFBF,5px 5px 5px #B9B9B9;
   -webkit-box-shadow: -2px -2px 2px #BFBFBF,5px 5px 5px #B9B9B9;
   -o-box-shadow: -2px -2px 2px #BFBFBF,5px 5px 5px #B9B9B9;
   -ms-box-shadow: -2px -2px 2px #BFBFBF,5px 5px 5px #B9B9B9;
+}
+.container #my-info, .container #enemy-info {
+  min-height: 300px;
+  max-height: 300px;
+  overflow: auto;
 }
 
 /*# sourceMappingURL=style.css.map */
